@@ -31,7 +31,7 @@ begin
 ;       and accuracy
 ;----------------------------------------------------------------------
 	InterpMethods = (/"bilinear","patch","conserve","neareststod"/)
-	Method = InterpMethods(2) 
+	Method = InterpMethods(0) 
 	GridType = 0.5
 ;----------------------------------------------------------------------
 ;       CMIP name of variable
