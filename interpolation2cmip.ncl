@@ -9,7 +9,6 @@ load "$NCARG_ROOT/lib/ncarg/nclscripts/csm/shea_util.ncl"
 ;@data:2020/10/23
 ;-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 begin
-
 ;&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
 ;       Define parameters,You must set this part to run the program
 ;       including interpolation year, range, method, accuracy
@@ -47,6 +46,7 @@ begin
 	path = "/home/jack/Downloads/cmipdata/sstdata/"	
 	pathout = "/home/jack/Downloads/cmipdata/regrid/"             
 	outputname = "all.nc"
+	
 ;&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
 ;           pretreatment for batch
 ;&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
@@ -86,6 +86,7 @@ begin
 
 	;print(p)
 	;print(modname)
+	
 ;&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
 ;	Create a matrix to hold the interpolation results
 ;     including (time,models,lat,lon)
@@ -235,7 +236,6 @@ begin
 				end do
 				delete([/idmon,f,t/])
 			end if	
-			
 			s = s+moncount
 		
 			if (s.eq.month)then
@@ -247,7 +247,6 @@ begin
 				s = 0
 			end if
 	
-		
 		else
 			if(dims.eq.2)then
 				print("****************(allmonth)Curvilinear: "+modname(j-1)+"****************")			
@@ -277,9 +276,7 @@ begin
 				delete(tt)	
 			end if 
 		end if
-
-		
- 	end do 
+	end do 
 
 ;&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
 ;	Output the results to NETCDF
