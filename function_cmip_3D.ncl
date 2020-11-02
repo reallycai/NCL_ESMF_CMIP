@@ -322,7 +322,6 @@ begin
 	fileAtt = True
 	fileAtt@title = "CMIP interpolation file"
 	fileAtt@usemothd = "Earth System Modeling Framework (ESMF) software"
-	fileAtt@mydarling = "李淼"
 	fileattdef(ncdf,fileAtt)
 
 	dimNames = (/"time","model","lat","lon"/)
