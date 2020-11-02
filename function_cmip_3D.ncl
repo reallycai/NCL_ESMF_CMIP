@@ -267,14 +267,14 @@ begin
 				do t=0,moncount-1
 					value = f->$valu$(idmon(t),:,:)
 					tt =  ESMF_regrid_with_weights(value,wgtFileName(j-1),Opt) 
-					newp(t+s,j-1,:,:) =  conform_dims((/1,1,75,57/),tt,(/2,3/))	
+					newp(t+s,j-1,:,:) =  conform_dims((/1,1,nlat,nlon/),tt,(/2,3/))	
 				end do
 				delete([/idmon,f,t/])	
 			else		
 				do t=0,moncount-1
 					value = f->$valu$(idmon(t),:,:)
 					tt =  ESMF_regrid_with_weights(value,wgtFileName(j-1),Opt) 
-					newp(t+s,j-1,:,:) =  conform_dims((/1,1,75,57/),tt,(/2,3/))
+					newp(t+s,j-1,:,:) =  conform_dims((/1,1,nlat,nlon/),tt,(/2,3/))
 				end do
 				delete([/idmon,f,t/])
 			end if	
@@ -294,7 +294,7 @@ begin
 				do t=0,month-1
 					value = f->$valu$(idmon(t),:,:)
 					tt =  ESMF_regrid_with_weights(value,wgtFileName(j-1),Opt) 
-					newp(t,j-1,:,:) =  conform_dims((/1,1,75,57/),tt,(/2,3/))	      
+					newp(t,j-1,:,:) =  conform_dims((/1,1,nlat,nlon/),tt,(/2,3/))	      
 				end do
 				finish(j)
 				delete(value)	
@@ -304,7 +304,7 @@ begin
 				do t=0,month-1
 					value = f->$valu$(idmon(t),:,:)
 					tt =  ESMF_regrid_with_weights(value,wgtFileName(j-1),Opt) 
-					newp(t,j-1,:,:) =  conform_dims((/1,1,75,57/),tt,(/2,3/))	      
+					newp(t,j-1,:,:) =  conform_dims((/1,1,nlat,nlon/),tt,(/2,3/))	      
 				end do
 				finish(j)
 				delete(value)	
