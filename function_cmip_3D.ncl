@@ -1,6 +1,11 @@
+; These files are loaded by default in NCL V6.2.0 and newer
+; load "$NCARG_ROOT/lib/ncarg/nclscripts/csm/gsn_code.ncl"
+; load "$NCARG_ROOT/lib/ncarg/nclscripts/csm/gsn_csm.ncl"
+; load "$NCARG_ROOT/lib/ncarg/nclscripts/csm/contributed.ncl"
+
 ; This file still has to be loaded manually
 load "$NCARG_ROOT/lib/ncarg/nclscripts/esmf/ESMF_regridding.ncl"
-load "$NCARG_ROOT/lib/ncarg/nclscripts/csm/shea_util.ncl"
+
 
 
 ;-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -204,7 +209,7 @@ begin
 			Opt                = True
 			Opt@ForceOverwrite = True
 			Opt@LLCorner       = (/latS,lonW /)
-			Opt@URCorner       = (/ latN, lonE /) 
+			Opt@URCorner       = (/latN, lonE/) 
 			Opt@Title          = "World Grid 1-degree Resolution"
 			;Opt@PrintTimings   = True
 			;Opt@Debug          = True
