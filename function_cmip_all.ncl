@@ -497,10 +497,11 @@ begin
 							tt =  ESMF_regrid_with_weights(value,wgtFileName(k,j-1),Opt) 
 							newp(j-1,t+s,k,:,:) =  conform_dims((/1,1,1,nlat,nlon/),tt,(/3,4/))	
 						end do
-						print(laycount(k)+"th layer has finished")
+						print("！！！！！！！！"+laycount(k)+"th layer has finished！！！！！！！！")
 						delete(tt)
 						delete(value)
 					end do
+					print("")
 					delete([/idmon,f/])	
 				else		
 					do k=0,pnum-1					
@@ -509,10 +510,11 @@ begin
 							tt =  ESMF_regrid_with_weights(value,wgtFileName(k,j-1),Opt) 
 							newp(j-1,t+s,k,:,:)=  conform_dims((/1,1,1,nlat,nlon/),tt,(/3,4/))
 						end do
-						print(laycount(k)+"th layer has finished")
+						print("！！！！！！！！"+laycount(k)+"th layer has finished！！！！！！！！")
 						delete(tt)	
 						delete(value)					
 					end do
+					print("")
 					delete([/idmon,f/])
 				end if	
 				s = s+moncount
@@ -528,7 +530,7 @@ begin
 							tt =  ESMF_regrid_with_weights(value,wgtFileName(k,j-1),Opt) 
 							newp(j-1,t,k,:,:) =  conform_dims((/1,1,1,nlat,nlon/),tt,(/3,4/))      
 						end do
-						print(laycount(k)+"th layer has finished")
+						print("！！！！！！！！"+laycount(k)+"th layer has finished！！！！！！！！")
 						delete(value)	
 						delete(tt)
 					end do
@@ -541,7 +543,7 @@ begin
 							tt =  ESMF_regrid_with_weights(value,wgtFileName(k,j-1),Opt) 
 							newp(j-1,t,k,:,:) = conform_dims((/1,1,1,nlat,nlon/),tt,(/3,4/))	      
 						end do
-						print(laycount(k)+"th layer has finished")
+						print("！！！！！！！！"+laycount(k)+"th layer has finished！！！！！！！！")
 						delete(value)	
 						delete(tt)
 					end do
