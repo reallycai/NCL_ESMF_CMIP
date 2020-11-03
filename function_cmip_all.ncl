@@ -138,7 +138,6 @@ begin
 ;&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&	
 		newp = new((/Duration,modnum,nlat,nlon/),float,1e20)
 		var = f->$modVar(0)$
-		printVarSummary(var&lat)	
 		newp!0="time"
 		newp!1="model"	
 		newp!2="lat"
