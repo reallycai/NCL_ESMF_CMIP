@@ -9,9 +9,9 @@ load "$NCARG_ROOT/lib/ncarg/nclscripts/esmf/ESMF_regridding.ncl"
 load "$NCARG_ROOT/lib/ncarg/nclscripts/esmf/ESMF_regridding.ncl"
 
 ;-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-;                                  NCL batch interpolation CMIP
+;                                                                   NCL batch interpolation CMIP
 ;@author:reallycai
-;@data:2020/11/03
+;@data:2020/11/04
 ;-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 undef ("getFre")
 function getFre(f,modVar)
@@ -194,6 +194,7 @@ begin
 				Opt@Title          = "CMIP6 grid"
 				Opt@Mask2D  = where(.not.ismissing(temp),1,0)
 				;Opt@PrintTimings   = True
+	
 				if (dims.eq.2)
 					curvilinear_to_SCRIP(srcGridName(j),lat2d,lon2d,Opt)
 				else 
@@ -235,6 +236,7 @@ begin
 				;Opt@PrintTimings   = True
 				;Opt@Debug          = True
 				Opt@DstGridType = "rectilinear"
+	
 				j = j+1
 			end if
 ;----------------------------------------------------------------------
@@ -242,73 +244,73 @@ begin
 ;----------------------------------------------------------------------
 			f = addfile(path+p(i),"r")
 			TIME       =  f->time
-			mon       =  cd_calendar(TIME,-1)/100
-			idmon     =  ind(mon.ge.yrStrt .and. mon.le.yrLast)
-			moncount	    =   dimsizes(idmon)
-			delete([/TIME,mon/])
+			data       =  cd_calendar(TIME,-1)/100
+			iddata      =  ind(data .ge.yrStrt .and. data .le.yrLast)
+			datacount	    =   dimsizes(iddata )
+			delete([/TIME,data/])
 		
 			print("Load: "+p(i))
-			if(moncount.eq.1)then
-				print("****************this doc contains "+ (moncount-1) +" months****************")
+			if(datacount.eq.1)then
+				print("****************this doc contains "+ (datacount-1) +" periods****************")
 				print("！！！！！！！No Interpolation Period In the File！！！！！！！")	
 				print("")		
-				delete([/idmon,f/])
+				delete([/iddata,f/])
 				continue
 			end if
-			print("****************this doc has "+ moncount +" needed months****************")
+			print("****************this doc has "+ datacount +" needed periods****************")
 			print("")
-			;print(mon)
-			;print(idmon)
+			;print(data)
+			;print(iddata)
 			;print(TIME)
 ;----------------------------------------------------------------------
 ; begin to interpolation 
 ;----------------------------------------------------------------------		
-			if(moncount.lt.Duration)then
+			if(datacount.lt.Duration)then
 				if(dims.eq.2)then	
-					do t=0,moncount-1
-						value = f->$valu$(idmon(t),:,:)
+					do t=0,datacount-1
+						value = f->$valu$(iddata(t),:,:)
 						tt =  ESMF_regrid_with_weights(value,wgtFileName(j-1),Opt) 
 						newp(t+s,j-1,:,:) =  conform_dims((/1,1,nlat,nlon/),tt,(/2,3/))	
 					end do
-					delete([/idmon,f/])	
+					delete([/iddata,f/])	
 				else		
-					do t=0,moncount-1
-						value = f->$valu$(idmon(t),:,:)
+					do t=0,datacount-1
+						value = f->$valu$(iddata(t),:,:)
 						tt =  ESMF_regrid_with_weights(value,wgtFileName(j-1),Opt) 
 						newp(t+s,j-1,:,:) =  conform_dims((/1,1,nlat,nlon/),tt,(/2,3/))
 					end do
-					delete([/idmon,f/])
-				end if		
-				s = s+moncount
+					delete([/iddata,f/])
+				end if	
+				s = s+datacount	
 				if (s.eq.Duration)then
 					finish(j)
 					delete(value)	
 					delete(tt)
 					s = 0
-				end if
+				end if		
 			else
 				if(dims.eq.2)then
 					do t=0,Duration-1
-						value = f->$valu$(idmon(t),:,:)
+						value = f->$valu$(iddata(t),:,:)
 						tt =  ESMF_regrid_with_weights(value,wgtFileName(j-1),Opt) 
 						newp(t,j-1,:,:) =  conform_dims((/1,1,nlat,nlon/),tt,(/2,3/))	      
 					end do
 					finish(j)
 					delete(value)	
 					delete(tt)
-					delete([/idmon,f/])
+					delete([/iddata,f/])
 				else
 					do t=0,Duration-1
-						value = f->$valu$(idmon(t),:,:)
+						value = f->$valu$(iddata(t),:,:)
 						tt =  ESMF_regrid_with_weights(value,wgtFileName(j-1),Opt) 
 						newp(t,j-1,:,:) =  conform_dims((/1,1,nlat,nlon/),tt,(/2,3/))	      
 					end do
 					finish(j)
 					delete(value)	
 					delete(tt)
-					delete([/idmon,f/])
+					delete([/iddata,f/])
 				end if 
-			end if
+			end if		
  		end do 
 ;&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
 ;	Output the results to NETCDF
@@ -426,6 +428,7 @@ begin
 					Opt@Title          = "CMIP6 grid"
 					Opt@Mask2D  = where(.not.ismissing(temp),1,0)
 					;Opt@PrintTimings   = True
+		
 					if (dims.eq.2)
 						curvilinear_to_SCRIP(srcGridName(k,j),lat2d,lon2d,Opt)
 					else 
@@ -470,30 +473,32 @@ begin
 				delete(lon2d)
 				delete(f)
 			end if
+
 			f = addfile(path+p(i),"r")
 			TIME       =  f->time
-			mon       =  cd_calendar(TIME,-1)/100
-			;print(mon)
-			idmon     =  ind(mon.ge.yrStrt .and. mon.le.yrLast)
-			;print(idmon)
-			moncount	    =   dimsizes(idmon)
-			delete([/TIME,mon/])
+			data       =  cd_calendar(TIME,-1)/100
+			;print(data)
+			iddata     =  ind(data.ge.yrStrt .and.data.le.yrLast)
+			;print(iddata)
+			datacount	    =   dimsizes(iddata)
+			delete([/TIME,data/])
+			
 			print("Load: "+p(i))
-			if(moncount.eq.1)then
-				print("****************this doc contains "+ (moncount-1) +" months****************")
+			if(datacount.eq.1)then
+				print("****************this doc contains "+ (datacount-1) +" peiods****************")
 				print("！！！！！！！No Interpolation Period In the File！！！！！！！")	
 				print("")		
-				delete([/idmon,f/])
+				delete([/iddata,f/])
 				continue
 			end if
-			print("****************this doc has "+ moncount +" needed months****************")
+			print("****************this doc has "+ datacount +" needed periods****************")
 			print("")
 	
-			if(moncount.lt.Duration)then
+			if(datacount.lt.Duration)then
 				if(dims.eq.2)then	
 					do k=0,pnum-1				
-						do t=0,moncount-1
-							value = f->$valu$(idmon(t),ind(laycount(k).eq.pleve),:,:)
+						do t=0,datacount-1
+							value = f->$valu$(iddata(t),ind(laycount(k).eq.pleve),:,:)
 							tt =  ESMF_regrid_with_weights(value,wgtFileName(k,j-1),Opt) 
 							newp(j-1,t+s,k,:,:) =  conform_dims((/1,1,1,nlat,nlon/),tt,(/3,4/))	
 						end do
@@ -502,11 +507,11 @@ begin
 						delete(value)
 					end do
 					print("")
-					delete([/idmon,f/])	
+					delete([/iddata,f/])	
 				else		
 					do k=0,pnum-1					
-						do t=0,moncount-1
-							value = f->$valu$(idmon(t),ind(laycount(k).eq.pleve),:,:)
+						do t=0,datacount-1
+							value = f->$valu$(iddata(t),ind(laycount(k).eq.pleve),:,:)
 							tt =  ESMF_regrid_with_weights(value,wgtFileName(k,j-1),Opt) 
 							newp(j-1,t+s,k,:,:)=  conform_dims((/1,1,1,nlat,nlon/),tt,(/3,4/))
 						end do
@@ -515,9 +520,9 @@ begin
 						delete(value)					
 					end do
 					print("")
-					delete([/idmon,f/])
+					delete([/iddata,f/])
 				end if	
-				s = s+moncount
+				s = s+datacount
 				if (s.eq.Duration)then
 					finish(j)
 					s = 0
@@ -526,7 +531,7 @@ begin
 				if(dims.eq.2)then
 					do k=0,pnum-1
 						do t=0,Duration-1
-							value = f->$valu$(idmon(t),ind(laycount(k).eq.pleve),:,:)
+							value = f->$valu$(iddata(t),ind(laycount(k).eq.pleve),:,:)
 							tt =  ESMF_regrid_with_weights(value,wgtFileName(k,j-1),Opt) 
 							newp(j-1,t,k,:,:) =  conform_dims((/1,1,1,nlat,nlon/),tt,(/3,4/))      
 						end do
@@ -535,11 +540,11 @@ begin
 						delete(tt)
 					end do
 					finish(j)
-					delete([/idmon,f/])
+					delete([/iddata,f/])
 				else
 					do k=0,pnum-1				
 						do t=0,Duration-1
-							value = f->$valu$(idmon(t),ind(laycount(k).eq.pleve),:,:)
+							value = f->$valu$(iddata(t),ind(laycount(k).eq.pleve),:,:)
 							tt =  ESMF_regrid_with_weights(value,wgtFileName(k,j-1),Opt) 
 							newp(j-1,t,k,:,:) = conform_dims((/1,1,1,nlat,nlon/),tt,(/3,4/))	      
 						end do
@@ -548,7 +553,7 @@ begin
 						delete(tt)
 					end do
 					finish(j)
-					delete([/idmon,f/])
+					delete([/iddata,f/])
 				end if 
 			end if
 		end do
@@ -583,4 +588,3 @@ begin
 		costtime(starttime)
 	end if
 end 
-
