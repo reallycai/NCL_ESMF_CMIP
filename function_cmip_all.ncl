@@ -5,9 +5,6 @@
 
 ; This file still has to be loaded manually
 load "$NCARG_ROOT/lib/ncarg/nclscripts/esmf/ESMF_regridding.ncl"
-; This file still has to be loaded manually
-load "$NCARG_ROOT/lib/ncarg/nclscripts/esmf/ESMF_regridding.ncl"
-
 ;-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ;                                                                   NCL batch interpolation CMIP
 ;@author:reallycai
